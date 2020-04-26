@@ -1,12 +1,10 @@
 # Site
-name: 'Mundana'
-description: 'Mundana is a free Jekyll theme for awesome people like you, Medium like.'
+name: 'jji-wan'
+description: 'jjiwan 부부의 개발 이야기'
 logo: 'assets/images/logo.png'
 favicon: 'assets/images/favicon.ico'
 baseurl: 'https://jaewanlee.github.io/jjiwan.github.io'
-disqus: 'demowebsite'
-email: 'wowthemesnet@gmail.com'
-mailchimp-list: 'https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b'
+email: 'ianlee9180@gmail.com'
 
 include: ['_pages']
 permalink: /:title/
@@ -19,15 +17,13 @@ plugins:
   - jekyll-seo-tag
 
 authors:
-  sal:
-    name: Sal
-    site: https://www.wowthemes.net
+  jaewan:
+    name: Jaewan
     avatar: /assets/images/avatar1.jpg
-    bio: "Hi, I am Sal, the author of Mundana, the theme you're currently previewing. I hope you like it!"
-    email: wowthemesnet@gmail.com
-    twitter: https://twitter.com/wowthemesnet
+    bio: 'Hi, I am Jaewan!'
+    email: ianlee9180@gmail.com
 
-  jane:
+  sangji:
     name: Jane
     site: https://www.wowthemes.net
     avatar: /assets/images/avatar2.jpg
@@ -42,7 +38,7 @@ defaults:
       path: '_posts'
     values:
       layout: post
-      author: sal
+      author: jaewan
       avatar: /assets/images/avatar1.jpg
 
   # all pages
