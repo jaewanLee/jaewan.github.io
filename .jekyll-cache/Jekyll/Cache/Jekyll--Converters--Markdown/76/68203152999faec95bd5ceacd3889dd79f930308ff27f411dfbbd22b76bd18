@@ -1,0 +1,362 @@
+I"�2<div class="container">
+
+    
+
+
+
+    <!-- Begin post excerpts, let's highlight the first 4 posts on top -->
+    <div class="row remove-site-content-margin">
+
+        <!-- latest post -->
+        
+        <div class="col-md-6">
+            <div class="card border-0 mb-4 box-shadow">
+                <a href="/pages/my-first-blog/">
+                    <div class="topfirstimage" style="background-image: url( /pages/assets/images/home.jpg); height: 200px;    background-size: cover;    background-repeat: no-repeat;">
+                    </div>
+                </a>
+                <div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
+                    <h2 class="h4 font-weight-bold">
+                        <a class="text-dark" href="/pages/my-first-blog/">my first test blog</a>
+                    </h2>
+                    <p class="excerpt">
+                        첫번째 테스트 페이지 입니다. 하지만 페이지의 크기등을 확인하기 위하여조금더 테스트를 해봐야할것 같습니다.
+                    </p>
+                    <div>
+                        <small class="d-block text-muted">
+                            In <span class="catlist">
+                                
+                                <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+                                
+                                <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#typescript">typescript</a><span class="sep">, </span>
+                                
+                                <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+                                
+                            </span>
+                        </small>
+                        <small class="text-muted">
+                            May 03, 2020
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+
+            <!-- second latest post --><div class="mb-3 d-flex align-items-center">
+                
+                <div class="col-md-4">
+                    <a href="/pages/my-second-blog/">
+                        <img class="w-100" src="http://localhost:4000/pages/assets/images/home.jpg" alt="my second test blog" />
+                    </a>
+                </div>
+                
+                <div>
+                    <h2 class="mb-2 h6 font-weight-bold">
+                        <a class="text-dark" href="/pages/my-second-blog/">my second test blog</a>
+                    </h2>
+                    <small class="d-block text-muted">
+                        In <span class="catlist">
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+                            
+                        </span>
+                    </small>
+                    <small class="text-muted">
+                        May 02, 2020
+                    </small>
+                </div>
+            </div>
+
+            <!-- third latest post --><div class="mb-3 d-flex align-items-center">
+                
+                <div class="col-md-4">
+                    <a href="/pages/test-blog/">
+                        <img class="w-100" src="/pages/assets/images/home.jpg" alt="my third test blog" />
+                    </a>
+                </div>
+                
+                <div>
+                    <h2 class="mb-2 h6 font-weight-bold">
+                        <a class="text-dark" href="/pages/test-blog/">my third test blog</a>
+                    </h2>
+                    <small class="d-block text-muted">
+                        In <span class="catlist">
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+                            
+                        </span>
+                    </small>
+                    <small class="text-muted">
+                        May 01, 2020
+                    </small>
+                </div>
+            </div>
+
+            <!-- fourth latest post --><div class="mb-3 d-flex align-items-center">
+                
+                <div class="col-md-4">
+                    <a href="/pages/my-third-blog/">
+                        <img class="w-100" src="/pages/assets/images/home.jpg" alt="my third test blog" />
+                    </a>
+                </div>
+                
+                <div>
+                    <h2 class="mb-2 h6 font-weight-bold">
+                        <a class="text-dark" href="/pages/my-third-blog/">my third test blog</a>
+                    </h2>
+                    <small class="d-block text-muted">
+                        In <span class="catlist">
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+                            
+                            <a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+                            
+                        </span>
+                    </small>
+                    <small class="text-muted">
+                        May 01, 2020
+                    </small>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Sticky - add sticky tag to the post you want to highlight here - tags: [sticky] -->
+    <!-- 
+    
+    
+    
+    
+    
+    
+    
+     -->
+
+
+
+
+
+    
+    <!--endif page url is / -->
+
+
+
+    <!-- Now the rest of the posts with the usual loop but with an offset:4 on the first page so we can skeep the first 4 posts displayed above -->
+
+    <div class="row mt-3">
+
+        <div class="col-md-8 main-loop">
+
+            <h4 class="font-weight-bold spanborder"><span>All Stories</span></h4>
+
+
+            
+
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/my-first-blog/">my first test blog</a>
+	</h2>
+	<p class="excerpt">
+	   첫번째 테스트 페이지 입니다. 하지만 페이지의 크기등을 확인하기 위하여조금더 테스트를 해봐야할것 같습니다.
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#typescript">typescript</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 03, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/my-first-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my first test blog" />
+	</a>
+	</div>
+
+</div>
+
+            
+
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/my-second-blog/">my second test blog</a>
+	</h2>
+	<p class="excerpt">
+	   두번째 테스트 페이지 입니다. 이번에는 하이라이트입니다
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 02, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/my-second-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my second test blog" />
+	</a>
+	</div>
+
+</div>
+
+            
+
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/test-blog/">my third test blog</a>
+	</h2>
+	<p class="excerpt">
+	     이건 첫번째 인라인          이건 두번째 인라인                  이건 세번째 인라인                    이렇게 하면 중간      
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 01, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/test-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my third test blog" />
+	</a>
+	</div>
+
+</div>
+
+            
+
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/my-third-blog/">my third test blog</a>
+	</h2>
+	<p class="excerpt">
+	     이건 첫번째 인라인          이건 두번째 인라인                  이건 세번째 인라인                    이렇게 하면 중간      
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 01, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/my-third-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my third test blog" />
+	</a>
+	</div>
+
+</div>
+
+            
+
+            <div class="mt-5">
+                <!-- Pagination links -->
+                
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="sticky-top sticky-top-offset">
+    <h4 class="font-weight-bold spanborder"><span>Tags</span></h4>
+    <ul>
+        
+        <li class="mb-4">
+            <span>
+                <h6 class="font-weight-bold">
+                    <a href="/pages/categories.html#techdocs" class="
+                        text-dark">techDocs</a>
+                </h6>
+            </span>
+        </li>
+        
+        <li class="mb-4">
+            <span>
+                <h6 class="font-weight-bold">
+                    <a href="/pages/categories.html#node" class="
+                        text-dark">node</a>
+                </h6>
+            </span>
+        </li>
+        
+        <li class="mb-4">
+            <span>
+                <h6 class="font-weight-bold">
+                    <a href="/pages/categories.html#aws" class="
+                        text-dark">aws</a>
+                </h6>
+            </span>
+        </li>
+        
+        <li class="mb-4">
+            <span>
+                <h6 class="font-weight-bold">
+                    <a href="/pages/categories.html#typescript" class="
+                        text-dark">typescript</a>
+                </h6>
+            </span>
+        </li>
+        
+    </ul>
+</div>
+        </div>
+
+    </div>
+
+
+
+</div>
+:ET

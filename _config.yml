@@ -1,12 +1,14 @@
 # Site
-name: 'jji-wan'
-description: 'jjiwan 부부의 개발 이야기'
-logo: 'assets/images/logo.png'
-favicon: 'assets/images/favicon.ico'
-baseurl: 'https://jaewanlee.github.io/jjiwan.github.io'
-email: 'ianlee9180@gmail.com'
+name: "Mundana"
+description: "Jaewan-Sangji Tech Blog"
+logo: "assets/images/logo.png"
+favicon: "assets/images/favicon.ico"
+baseurl: "/pages"
+disqus: "demowebsite"
+email: "ianlee9180@gmail.com"
+mailchimp-list: "https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b"
 
-include: ['_pages']
+include: ["_pages"]
 permalink: /:title/
 
 # Plugins
@@ -18,16 +20,21 @@ plugins:
 
 authors:
   jaewan:
-    name: Jaewan
-    avatar: /assets/images/avatar1.jpg
-    bio: 'Hi, I am Jaewan!'
+    name: jaewan
+    site: https://www.linkedin.com/in/jaewan-lee-b670bb138
+    avatar: /assets/images/jaewan_avatar.jpg
+    bio: |
+      [ZigBang Backend Developer] <br>
+      * Enjoy and challenge all areas of development. <br>
+      * Typescript, NodeJS, Java, React, Android
     email: ianlee9180@gmail.com
+    twitter: https://twitter.com/wowthemesnet
 
   sangji:
-    name: Jane
-    site: https://www.wowthemes.net
-    avatar: /assets/images/avatar2.jpg
-    bio: 'Blogger, fashionista, love to explore new ideas and write on my morning coffee!'
+    name: sangji
+    site: https://www.linkedin.com/in/sangji-yoo-13642615b
+    avatar: /assets/images/sangji_avatar.jpg
+    bio: "KnoLabs Backend Developer,"
     email: fakemail@gmail.com
     twitter: https://twitter.com/wowthemesnet
 
@@ -35,15 +42,15 @@ authors:
 defaults:
   # all posts
   - scope:
-      path: '_posts'
+      path: "_posts"
     values:
       layout: post
       author: jaewan
-      avatar: /assets/images/avatar1.jpg
+      avatar: /assets/images/jaewan_avatar1.jpg
 
   # all pages
   - scope:
-      path: '_pages'
+      path: "_pages"
     values:
       layout: page
 
