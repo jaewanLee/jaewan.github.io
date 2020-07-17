@@ -1,0 +1,213 @@
+I"�<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-9">
+                    <h2 class="font-weight-bold">jaewan <span class="small btn btn-outline-success btn-sm btn-round"><a href="https://twitter.com/wowthemesnet">Follow</a></span></h2>
+                    <p><a href="https://www.linkedin.com/in/jaewan-lee-b670bb138">https://www.linkedin.com/in/jaewan-lee-b670bb138</a></p>
+                    <p class="excerpt">[ZigBang Backend Developer] <br />
+* Enjoy and challenge all areas of development. <br />
+* Typescript, NodeJS, Java, React, Android
+</p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <img alt="jaewan" src="/pages//assets/images/jaewan_avatar.jpg" class="rounded-circle" height="100" width="100" />
+                </div>
+            </div>
+            <h4 class="font-weight-bold spanborder"><span>Posts by jaewan</span></h4>
+            
+            
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/my-first-blog/">my first test blog</a>
+	</h2>
+	<p class="excerpt">
+	   첫번째 테스트 페이지 입니다. 하지만 페이지의 크기등을 확인하기 위하여조금더 테스트를 해봐야할것 같습니다.
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#typescript">typescript</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 03, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/my-first-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my first test blog" />
+	</a>
+	</div>
+
+</div>
+            
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/android-workmanager-translate/">Android WorkManager 번역</a>
+	</h2>
+	<p class="excerpt">
+	   Schedule tasks with WorkManager
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#android">android</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 03, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/android-workmanager-translate/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="Android WorkManager 번역" />
+	</a>
+	</div>
+
+</div>
+            
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/my-second-blog/">my second test blog</a>
+	</h2>
+	<p class="excerpt">
+	   두번째 테스트 페이지 입니다. 이번에는 하이라이트입니다
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 02, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/my-second-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my second test blog" />
+	</a>
+	</div>
+
+</div>
+            
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/test-blog/">test blog</a>
+	</h2>
+	<p class="excerpt">
+	     이건 첫번째 인라인          이건 두번째 인라인                  이건 세번째 인라인                    이렇게 하면 중간      
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 01, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/test-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="test blog" />
+	</a>
+	</div>
+
+</div>
+            
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/real-blog/">my third test blog</a>
+	</h2>
+	<p class="excerpt">
+	     이건 첫번째 인라인          이건 두번째 인라인                  이건 세번째 인라인                    이렇게 하면 중간      
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 01, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/real-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my third test blog" />
+	</a>
+	</div>
+
+</div>
+            
+            <div class="mb-5 d-flex justify-content-between main-loop-card">
+<div class="pr-3">
+	<h2 class="mb-1 h4 font-weight-bold">
+	<a class="text-dark" href="/pages/my-third-blog/">my third test blog</a>
+	</h2>
+	<p class="excerpt">
+	     이건 첫번째 인라인          이건 두번째 인라인                  이건 세번째 인라인                    이렇게 하면 중간      
+	</p>
+	<small class="d-block text-muted">
+		In <span class="catlist">
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#techdocs">techDocs</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#node">node</a><span class="sep">, </span>
+		
+		<a class="text-capitalize text-muted smoothscroll" href="/pages/categories.html#aws">aws</a><span class="sep">, </span>
+		
+		</span>
+	</small>
+	<small class="text-muted">
+		May 01, 2020
+	</small>
+</div>
+
+	<div class="col-md-3 pr-0 text-right">
+	<a href="/pages/my-third-blog/">
+	<img class="w-100" src="/pages/assets/images/home.jpg" alt="my third test blog" />
+	</a>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+:ET

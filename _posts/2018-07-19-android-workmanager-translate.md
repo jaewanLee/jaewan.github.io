@@ -1,0 +1,323 @@
+---
+layout: post
+title: 'Android WorkManager 번역'
+author: jaewan
+categories: [techDocs, android]
+image: assets/images/andorid-workmanager-translate.png
+comments: false
+---
+
+# Schedule tasks with WorkManager
+
+---
+
+WorkManager API는 보증할 수 있고, 비동기적인 업무이면서 특정 시간에 돌려야하는 작업을 만들기 쉽게 도와줍니다. 이 API들은 task를 만들고, 즉각적이거나 특정한 시간에 실행할수 있도록 WorkManager에게 전달합니다. 예를들어, 어떤 app은 주기적으로 네트워크로 부터 새로운 리소스를 다운받아야 한다. 이 class들을 사용하면 너는 task를 설정하고, 적당한 주기를 선택하고 ("디바이를 충전 중이고 온라인일때"처럼) workManager에게 해당 조건이 맞을때 그 task를 실행하도록 전달한다. 해당 task는 앱이 강제 종료되거나 디바이스가 재실행 되는 상황에서도 실행이 보장된다.
+
+> Note: WorkManager는 app이 종료된 상황에도 data를 서버에 업로드 하는것과 같이 시스템에서 작동하는 것을 보장받도록 요구하는 task에 사용됩니다. WorkManager는 앱의 프로세스가 종료된뒤, 백그라운드 작업을 종료하고 안전하게 종료되는 in-process를 위한것이 아닙니다. 이러한 상황에서는 우리는 ThreadPools을 사용하기를 권장드립니다.
+
+WorkManager는 디바이스의 api 레벨과 app상태와 같은 요인들에 따라 적절한 방식으로 task를 작동시킵니다. 만일 WorkManager가 app이 작동중에 task를 실행시킨다면, WorkManager는 앱의 process 안의 새로운 thread에서 task를 실행시킬 수 있습니다. 만일 app이 작동하고 있지 않다면, WorkManager는 디바이스 API 레벨과 dependency에 기반하여 background task를 스케쥴할 적당한 방법을 선택할것입니다. WorkManager는 JobScheduler, Firebase JobDispatcher, 또는 AlarmManager를 사용할 것입니다. 당신은 현재 디바이스가 가지고있는 API에 따라 가능한 로직을 작성할 필요가 없습니다. 대신, 당신은 WorkManager에게 당신의 task를 넘기고 WorkManager가 최고의 옵션을 선택하게하면 됩니다.
+
+게다가, WorkManager는 여러가지 기능들을 제공합니다. 예를들어, 당신은 task 연결을 셋팅할 수 있습니다; 한 task가 끝나면, WorkManager가 chain에서 다음 task를 queue up(Queue에서 뺸다는 의미인것 같습니다.)합니다. 또한 당신은 task의 LiveData를 observing하여 상태와 return value를 체크할 수 있습니다.
+
+이러한 개요는 WorkManager의 가장 중요한 특징을 포함합니다. 하지만 더 많은 기능들이 가능합니다 ; 더 많은 detail들을 위해 WorkManager reference documentation 를 참고해 주세요..
+
+> Note: WorkManaegr library를 당신의 Android project에 import하기 위해서 Adding Components to your Project 를 확인하세요
+
+# Classes and concepts
+
+---
+
+WorkManaegr API는 여러개의 다른 class 들을 사용합니다. 몇몇 상황에서 당신은 API class들 중 subclass가 필요할 것입니다.
+
+가장 중요한 class들은 아래와 같습니다 :
+
+- Worker: 당신이 원하는 기능을 구체화 합니다. 이 WrokManaegr API는 abstract Worker class를 포함하고 있습니다. 사용자는 해당 class를 extend하고 작업을 이곳에 구현할 수 있습니다.
+
+- WorkRequest: 개별 task를 반영합니다. 최소한의 기능은 WorkRequest object가 어떤 WorkRequestclass가 해당 작업을 수행할지 구체화합니다. 하지만, 사용자는 WorkRequestobject의 어떤 task가 작동해야 하는 상황과 같은 구체적인 상황에 대한 세부사항을 더할 수 있습니다. 모든 WorkRequest는 자동으로 생성된 unique한 ID를 가지고 있습니다. 사용자는 해당 ID를 task를 취소하거나 task의 상태를 가져오는데 사용 할 수 있습니다. WorkRequest는 abstract class입니다. 당신의 코드에서 당신은 아래의 subclasses중 하나를 사용할 것입니다, OneTimeWorkRequest or PeriodicWorkRequest. <br><br>
+
+  - WorkRequest.Builder: WorkRequest를 만들도록 도와주는 helper class입니다. 사용자는 또다른 subclass인 OneTimeWorkRequest.Builder 또는 PeriodicWorkRequest.Builder를 사용할 것입니다.
+
+  - Constraints: 언제 task가 실행되어야 하는지에 대한 자세한 규칙 (예를들어 "네트워크가 연결되었을때만") specifies restrictions on when the task should run (for example, "only when connected to the network"). 사용자는 Constraints object를 Constraints.Builder로 만들고,WorkRequest를 만들기 전에 wWorkRequest.Builder에게 Constraints를 넘겨줍니다.
+
+- WorkManager: 작업 요청을 Queue에 넣고 관리합니다. 사용자는 사용자의 WorkRequest object를 enqueue하기 위해 WorkManager에게 넘겨줍니다. WorkManager는 사용자가 지정한 제약조건을 준수하면서 시스템 로드를 분산시키는 방식으로 task를 스케쥴링합니다.WorkStatus: contains information about a particular task.
+
+- WorkManager는 각 WorkRequest마다 LiveData를 제공합니다. 이 LiveData는 WorkStatus object를 가지고 있습니다. LiveData를 observing하면서, 사용자는 task의 현재 상태와 task가 종료된 후 returned value를 확인할 수 있습니다.
+
+# Typical workflow
+
+---
+
+사용자가 사진 library 앱을 만든다고 가정해보자. 해당 앱은 주기적으로 저장된 이미지를 압축해야한다.사용자는 이미지 압축을 스케쥴링 하기 위해 WorkManager API들을 사용하길 원한다. 이럴 경우에 사용자는 언제 압축이 발생할지 부분적으로 고려할 필요가 없다. 사용자는 task를 설정하고 잊어버리면 된다.
+
+먼저, 사용자는 Worker class를 정의하고 그것의 doWork() 함수를 override한다. 당신의 worker class는 어떻게 작업을 실행시킬지 구체화한다. 하지만 언제 task를 작동시킬지에 대한 정보는 없다.
+
+<strong>KOTLIN</strong>
+
+```
+class CompressWorker : Worker() {
+    override fun doWork(): Result {
+
+        // Do the work here--in this case, compress the stored images.
+        // In this example no parameters are passed; the task is
+        // assumed to be "compress the whole library."
+        myCompress()
+
+        // Indicate success or failure with your return value:
+        return Result.SUCCESS
+
+        // (Returning RETRY tells WorkManager to try this task again
+        // later; FAILURE says not to try again.)
+
+    }
+}
+```
+
+다음, 사용자는 OneTimeWorkRequest object를 Worker에 기반하여 생성하고 WorkManager:와 함께 enqueue한다 :
+
+<strong>KOTLIN</strong>
+
+```
+val compressionWork = OneTimeWorkRequestBuilder<CompressWorker>().build()
+WorkManager.getInstance().enqueue(compressionWork)
+```
+
+WorkManager는 시스템 로드, device가 충전중인지, 그외의 것들을 고려하여 task를 돌리기 위한 적당한 시간을 선택한다. 대부분의 경우, 사용자가 특정한 제약이 없다면, WorkManager는 당신의 task를 바로 실행한다. 만일 사용자가 task의 상태를 확인해야 한다면, 사용자는 WorkStatus object를 적절한 LiveData<WorkStatus>를 관리하여 얻을 수 있다. 예를들어, 당신이 task가 끝났는지 확인하고 싶다면, 당신은 아래와 같은 코드를 사용할 수 있다.
+
+<strong>KOTLIN</strong>
+
+```
+WorkManager.getInstance().getStatusById(compressionWork.id)
+  .observe(lifecycleOwner, Observer { workStatus ->
+    // Do something with the status
+    if (workStatus != null && workStatus.state.isFinished) {
+    // ...
+  }
+})
+```
+
+LiveData에 관한 자세한 정보는 LiveData overview.를 확인하라.
+
+### Task constraints
+
+사용자는 task가 실행되어야 하는 특정 조건을 구체화 하길 원할 수 있다. 예를들어, 사용자가 특정한 task를 디바이스가 idle상태이고 충전중일때만 실행되기를 원할 수 있다. 이런 경우, 사용자는 OneTimeWorkRequest.Builder object를 만들고 OneTimeWorkRequest를 만들기 위해 해당 builder를 사용하면 된다.
+
+<strong>KOTLIN</strong>
+
+```
+// Create a Constraints that defines when the task should run
+val myConstraints = Constraints.Builder()
+  .setRequiresDeviceIdle(true)
+  .setRequiresCharging(true)
+  // Many other constraints are available, see the
+  // Constraints.Builder reference
+.build()
+
+val compressionWork = OneTimeWorkRequestBuilder<CompressWorker>()
+  .setConstraints(myConstraints)
+  .build()
+```
+
+이후 WorkManager가 task를 실행할 시간에 대해 사용자의 제약을 확인할 수 있도록 새로운 OneTimeWorkRequest object 를 WorkManager.enqueue()로 넘겨준다.
+
+# Canceling a Task
+
+---
+
+사용자는 task를 enqueue한 이후에 취소할 수 있다. task를 취소하기 위해서, 사용자는 WorkRequest object에서 확인 할 수 있는 task의 ID가 필요합니다. 예를들어, 아래 코드는 이전 section의 compressionWork 요청을 취소합니다.
+
+<strong>KOTLIN</strong>
+
+```
+val compressionWorkId:UUID = compressionWork.getId()
+WorkManager.getInstance().cancelWorkById(compressionWorkId)
+```
+
+WorkManager는 task를 취소하기 위한 최선의 노력을 한다. 하지만 task가 취소를 시도하는 사이 이미 진행되거나 끝날 수 있기때문에 선천적으로 불안한 상태이다. WorkManager는 또한 unique work sequence라는 method를 모든 task를 취소하거나 특정 tag를 가진 모든 task를 제거하기위해 제공한다.
+
+# Advanced functionality
+
+WorkManager API의 주요 기능은 fire-and-forget task를 간단하게 만들 수 있도록 해주는 것입니다. 이외에도, API는 더 정교한 요청을 처리할 수 있도록 추가적인 기능을 제공합니다.
+
+##### Recurring tasks
+
+사용자는 반복적으로 작동하는 task가 필요할 수 있다. 예를들어 사진 관리 app은 사진을 한번만 압축하기를 원하지 않을 것이다. 공유된 사진을 자주 확인하고, 새롭거나 변화된 사진이 있다면 필요에따라 압축 하길 원할 것이다. 이러한 반복 task는 찾아낸 사진을 압축하거나 새로운 "compress this image" task를 실행시켜야 한다.
+
+반복 task를 만들기 위해 PeriodicWorkRequest.Builder class를 PeriodicWorkRequest object를 만들기 위해 사용하고, OneTimeWorkRequest Object처럼PeriodicWorkRequest를 enqueue한다. 예를들어, 압축이 필요한 이미지를 선별하는 PhotoCheckWorker class를 정의하였다고 가정하자. 만일 우리가 task를 12시간 마다 돌리기를 원한다면 우리는 PeriodicWorkRequest object를 아래와 같이 만들면 된다.
+
+<strong>KOTLIN</strong>
+
+```
+val photoCheckBuilder =
+PeriodicWorkRequestBuilder<PhotoCheckWorker>(12, TimeUnit.HOURS)
+  // ...if you want, you can apply constraints to the builder here...
+
+  // Create the actual work object:
+  val photoCheckWork = photoCheckBuilder.build()
+  // Then enqueue the recurring task:
+WorkManager.getInstance().enqueue(photoCheckWork)
+```
+
+WorkManager는 사용자의 task를 사용자가 요청한 기간과 사용자가 제시한 조건, 그리고 다른 요구사항에따라 실행하고자 한다.
+
+##### Chained tasks
+
+사용자의 app은 특별산 순서로 여러 task를 실행시키고 싶을 수 있다. WorkManager는 여러 task들을 작업 시퀀스를 만들고 그것들이 작동해야하는 순서를 지정할 수 있다.
+
+예를들어, 사용자의 app이 세개의 OneTimeWorkRequest object가 있다고 가정해보자 : workA, workB, workC. 이 task들은 순서대로 작동해야 한다. 이들을 enqueue하기 위해, 첫번째OneTimeWorkRequestobject를 사용하여 WorkManager.beginWith()함수를 사용하여 라는 시퀀스를 만든다. 이 method는 시퀀스 task를 정의하는 WorkContinuation object를 return합니다. 그런뒤, 남아있는 OneTimeWorkRequest object들을 순서대로 WorkContinuation.then()을 사용하여 추가하고 이 전체를 WorkContinuation.enqueue()를 사용하여 enqueue합니다.<br>
+<strong>KOTLIN</strong>
+
+```
+WorkManager.getInstance()
+.beginWith(workA)
+  // Note: WorkManager.beginWith() returns a
+  // WorkContinuation object; the following calls are
+  // to WorkContinuation methods
+  .then(workB) // FYI, then() returns a new WorkContinuation instance
+  .then(workC)
+.enqueue()
+```
+
+WorkManager 요청받은 순서로 각 task별 제약조건에 따라 task를 실행시킨다. 만일 어떤 task가Worker.Result.FAILURE를 return한다면, 전체 시퀀스가 종료된다.
+
+사용자는 여러개의 OneTimeWorkRequest object를 아무 beginWith()와 .then()을 호출하여 사용 할 수 있다. 만일 너가 여러 OneTimeWorkRequest object를 한번의 method 호출로 전달했따면, WorkManager 는 남아있는 시퀀스를 작동하기 전에 모든 task들을(순서대로) 작동시킬 것이다. 예시는 아래와 같다.
+
+<strong>KOTLIN</strong>
+
+```
+WorkManager.getInstance()
+  // First, run all the A tasks (in parallel):
+  .beginWith(workA1, workA2, workA3)
+  // ...when all A tasks are finished, run the single B task:
+  .then(workB)
+  // ...then run the C tasks (in any order):
+  .then(workC1, workC2)
+.enqueue()
+```
+
+사용자는 WorkContinuation.combine() method를 호라용하여 멀티체인 join의 복잡한 시퀀스를 만들 수 있다. 예를들어 당신이 원하는 시퀀스가 아래와 같다고 가정해보자.
+
+![figure 1](https://developer.android.com/images/topic/libraries/architecture/workmanager-chain.svg)
+
+<strong>Figure 1.</strong> 사용자는 WorkContinuation을 복잡한 연결 task를 세팅하는데 사용 할 수 있다.
+이러한 시퀀스를 설정하기 위해, 두개의 분리된 체인을 만들고, 세번째 체인에서 둘을 join할 수 있다.
+
+<strong>KOTLIN</strong>
+
+```
+val chain1 = WorkManager.getInstance()
+.beginWith(workA)
+.then(workB)
+val chain2 = WorkManager.getInstance()
+.beginWith(workC)
+.then(workD)
+val chain3 = WorkContinuation
+.combine(chain1, chain2)
+.then(workE)
+chain3.enqueue()
+```
+
+이러한 경우, WorkManager는 workA를 workB이전에 실행시킨다. 또한 workC는 workD이전에 실행된다. 이후 workB와 workD가 모두 끝나면 WorkManager는 workE를 실행시킨다.
+
+> Note: WorkManager가 순서에따라 체인들을 작동시키는 동안, chain1이 chain2에 오버랩된다는 보장은 없다. 예를들어, workB가 workC이전또는 이후에 작동되거나 동시에 작동 될 수 있다. 확실한것은 각 subChain이 순서대로 작동한다는 것이다. 이발은 workB는 절대 workA가 끝나기 전에 시작하지 않는다.
+
+특정 상황에서 단락(shorthands)를 제공하기 위한 다양한 WorkContinuation method가 있다. 예를들어, WorkContinuation.combine(OneTimeWorkRequest, WorkContinuation…) method는 WorkManager에게 모든 특정 WorkContinuation 체인이 완료되었고, 특정한 OneTimeWorkRequest를 종료하라고 알려준다.자세한 사항은 WorkContinuation reference를 참조해라.
+
+##### Unique work sequences
+
+사용자는 beginWith()대신 beginUniqueWork()를 호출하여 unique work sequence를 만들 수 있다. 각각의 작업 시퀀스는 하나의 이름을 가지고 있다. WorkManager는 동시에 같은 이름을 가진 시퀀스를 허가해주지 않는다. 너가 새로운 시퀀스를 만들때, 당신은 같은 이름의 종료되지 않은 시퀀스가 있을경우 WorkManager가 어떻게 해줘야할지를 구체화 시켜줘야 한다.
+
+- 기존에 존재하는 시퀀스를 취소하고 새로운 것으로 대체(replace)한다.
+- 기존의 것을 유지 (Keep)시키고 새로운 것을 무시한다.
+- 기존의 것에 새로운 시퀀스를 추가(Append )하여, 기존의 시퀀스의 마지막 task가 종료되면 새로운 시퀀스의 첫번째 task를 먼저 돌린다. <br>
+
+unique work시퀀스는 당신의 task가 여러번 enqueued되면 안될경우 효율적이다. 예를들어, 만일 당신의 app이 network에 data를 sync시킬 필요가 있을대, 당신은 아마 sync라는 이름의 시퀀스를 enqueue할것이다. 그리고 만일 이미 같은 이름의 시퀀스가 있을경우, 이를 무시하라고 새로운 task를 정의할 수 있다.. unique work 시퀀스는 당신이 점진적으로 긴 task체인을 만들떄 유용하다. 예를들어, 사진 수정 app은 유저에게 긴 행동 체인을 취소하도록 해준다. 각각의 취소 명령은 조금 걸리겠지만, 정해진 순서대로 작동해야 한다. 이럴경우, 그 app은 "undo"체인을 만들고, "undo"명령을 원하는 체인을 붙일 수 있다.
+
+##### Tagged work
+
+사용자는 WorkRequestObject에 tag를 달아서 명시적인 task그룹을 만들 수 있다. tag를 달기 위해서는 WorkRequest.Builder.addTag()를 호출한다. 예시는 아래와 같다.
+
+##### KOTLIN
+
+```
+val cacheCleanupTask =
+OneTimeWorkRequestBuilder<MyCacheCleanupWorker>()
+.setConstraints(myConstraints)
+.addTag("cleanup")
+.build()
+```
+
+WorkManager class는 특정 tag를 달고있는 모든 task들을 실행시키는 몇가지 method들을 제공한다. 예를들어. WorkManager.cancelAllWorkByTag()는 특정 tag가 있는 모든 task들을 취소하고, WorkManager.getStatusesByTag()는 해당 tag가 달린 모든 task들의 모든 WorkStatus리스트를 return한다.
+
+##### Input parameters and returned values
+
+더 많은 유동성을 위해, 사용자는 자신의 task에 값(arguments)을 넘길 수 있고 task들의 return 결과를 갖을 수 있다. 주고받는 값은 key-value pairs로 되어 있다. task에 값(argument)를 넘기고, WorkRequest.Builder.setInputData()method를 WorkRequest object를 생성하기 전에 호추한다. 이 method는 Data.Builder에서 생성 가능한 Data object를 갖고있다. Worker class는 이러한 값(arguments)를 Worker.getInputData()로 가져올 수 있다. return Value를 얻기위해 task는 Dataobject를 가지고 있는 Worker.setOutputData()를 호출한다. 사용자는 task의 LiveData<WorkStatus>를 observing하여 결과를 갖을 수 있다.
+
+예를 들어, worker class가 time-consuming 계산을 진행한다고 가정하자. 아래의 코드는 worker class가 어떻게 작동하는지 보여준다.
+
+KOTLIN
+
+```
+// Define the parameter keys:
+const val KEY_X_ARG = "X"
+const val KEY_Y_ARG = "Y"
+const val KEY_Z_ARG = "Z"
+
+// ...and the result key:
+const val KEY_RESULT = "result"
+
+// Define the Worker class:
+class MathWorker : Worker() {
+
+    override fun doWork(): Result {
+        val x = inputData.getInt(KEY_X_ARG, 0)
+        val y = inputData.getInt(KEY_Y_ARG, 0)
+        val z = inputData.getInt(KEY_Z_ARG, 0)
+
+        // ...do the math...
+        val result = myCrazyMathFunction(x, y, z);
+
+        //...set the output, and we're done!
+        val output: Data = mapOf(KEY_RESULT to result).toWorkData()
+        setOutputData(output)
+
+        return Result.SUCCESS
+    }
+
+}
+```
+
+To create the work and pass the arguments, you'd use code like this:
+
+<strong>KOTLIN</strong>
+
+```
+val myData: Data = mapOf("KEY_X_ARG" to 42,
+"KEY_Y_ARG" to 421,
+"KEY_Z_ARG" to 8675309)
+.toWorkData()
+
+// ...then create and enqueue a OneTimeWorkRequest that uses those arguments
+val mathWork = OneTimeWorkRequestBuilder<MathWorker>()
+.setInputData(myData)
+.build()
+WorkManager.getInstance().enqueue(mathWork)
+```
+
+task의 WorkStatus에서 return value도 확인 가능하다.
+
+<strong>KOTLIN</strong>
+
+```
+WorkManager.getInstance().getStatusById(mathWork.id)
+.observe(this, Observer { status ->
+if (status != null && status.state.isFinished) {
+val myResult = status.outputData.getInt(KEY_RESULT,
+myDefaultValue)
+// ... do something with the result ...
+}
+})
+```
+
+만일 당신이 task들을 chain한다면 하나의 task의 결과물은 다음 task의 input이 될 수 있다. 만일 이게 하나의 OneTimeWorkRequest와 다른 하나의 OneTimeWorkRequest를 사용한 간단한 체인이라면 첫 task는 setOutputData()를 사용하여 결과를 return할 수 있고, 다음 task는getInputData()를 사용하여 결과값을 붙일 수 있다. 만일 chain이 더 복잡하다면 - 예를들어 여러 task가 모두 하나의 task에 결과를 보내는 경우 - 사용자는 InputMerger를 OneTimeWorkRequest.Builder에 선언하여 같은 key를 사용하여 서로 다른 task들에서 결과를 줄경우 어떻게 해야할지 정의할 수 있다.
+
+원문 : <a href="https://medium.com/androiddevelopers/workmanager-basics-beba51e94048"> https://medium.com/androiddevelopers/workmanager-basics-beba51e94048 </a>
