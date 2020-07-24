@@ -85,3 +85,60 @@ import { CatsService } from './cats/cats.service';
 })
 export class AppModule {}
 ```
+
+
+### DI fundamental
+DI(dependency injection)은 IOC(inversion of control)테크닉으로 코드상으로 명시적으로 의존성을 인스턴스화 하지 않고, 이를 IOC container(Nest에서는 nestJS runtime system)
+에게 대리하는 것이다. 가령 NestIOCContainer인 `app.modules.ts`에 `Catcontroller`와 `CatService`를 등록하는 아래 코드는 다음과 같은 프로세스로 진행된다.
+CatService.ts
+```
+import { Injectable } from '@nestjs/common';
+import { Cat } from './interfaces/cat.interface';
+
+@Injectable()
+export class CatsService {
+  private readonly cats: Cat[] = [];
+
+  findAll(): Cat[] {
+    return this.cats;
+  }
+}
+```
+CatController.ts
+```
+import { Controller, Get } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { Cat } from './interfaces/cat.interface';
+
+@Controller('cats')
+export class CatsController {
+  constructor(private catsService: CatsService) {}
+
+  @Get()
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
+  }
+}
+```
+
+app.modules.ts
+```
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats/cats.controller';
+import { CatsService } from './cats/cats.service';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class AppModule {}
+```
+1. CatService의 `@Injectable` 데코레이터를 선언하여 해당 class가 NestIoC container에서 관리가 가능하도록 한다.
+2. CatsController에서 constructor injection을 통해 CatService에 대한 의존성을 선언한다.
+3. app.module.ts에 `CatsService`의 토큰을 등록한다.
+
+이렇게 등록된 provider는 runtime시 아래와 같은 프로세스로 진행된다.
+* Nest IoC conatiner에서 CastController 인스턴스를 생성할때, 먼저 다른 dependency를 검토한다.
+* CatService를 발견하게되고, CatService Token을 확인하여 CatServiceClass를 return한다.
+* singleton scope(defulat)일 경우, CatService instance를 생성하여 cacheing하고 return한다. 만일 이미 존재할 경우 생성되어있는 instance를 return한다.
+
